@@ -1,3 +1,4 @@
+#G
 from api.scraping.scrappers import CADORSQueryScrapper, CADORSPageScrapper
 import configparser
 
