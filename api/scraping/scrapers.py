@@ -13,6 +13,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchWindowException
+from selenium.webdriver.common.keys import Keys
 
 
 class CADORSQueryScrapper:
@@ -21,7 +22,6 @@ class CADORSQueryScrapper:
         [
             Class to fetch page urls from the search page
         ]
-
         Args:
             config ([dict]): [Configuration path to provide configuration details]
         """
@@ -45,7 +45,6 @@ class CADORSQueryScrapper:
         [
             Function to get summary results after searching
         ]
-
         Returns:
             [tuple]: [
                 (
@@ -67,6 +66,7 @@ class CADORSQueryScrapper:
 
         search_btn = driver.find_element(By.ID, "btn_SearchTop")
         search_btn.click()
+        
 
         wait = WebDriverWait(driver, 240)
         wait.until(
@@ -125,8 +125,10 @@ class CADORSQueryScrapper:
                 # Change url code goes here
 
                 next_button = self.driver.find_element(By.ID, "btnNextTop")
-                next_button.click()
-
+                # next_button.click()
+                next_button.send_keys("\n")
+                
+                self.driver.save_screenshot('screenshot.png')
                 time.sleep(10)
                 wait = WebDriverWait(self.driver, 240)
                 wait.until(
@@ -148,7 +150,6 @@ class CADORSQueryScrapper:
     async def _write_occurances_files(self, occurances: list):
         """
         Function to write all occurance urls to files
-
         Args:
             occurances (list): [List of all occurance urls for incidents]
         """
@@ -156,6 +157,7 @@ class CADORSQueryScrapper:
         with open(
             os.path.join(self.occurances_output_folder, str(uuid.uuid4())), "wb"
         ) as f:
+            print('GURDEBUG',occurances)
             pickle.dump(occurances, f)
 
 
